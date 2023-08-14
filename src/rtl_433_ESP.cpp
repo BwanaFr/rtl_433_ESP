@@ -609,6 +609,8 @@ void rtl_433_ESP::rtl_433_ReceiverTask(void* pvParameters) {
               ((signalEnd - signalStart) >
                MINIMUM_SIGNAL_LENGTH)) // Minumum signal length of MINIMUM_SIGNAL_LENGTH MS
           {
+            //Insert a dummy gap 
+            _pulseTrains[_actualPulseTrain].gap[_nrpulses] = micros() - _lastChange;
             _pulseTrains[_actualPulseTrain].num_pulses = _nrpulses + 1;
             _pulseTrains[_actualPulseTrain].signalDuration =
                 signalEnd - signalStart;
