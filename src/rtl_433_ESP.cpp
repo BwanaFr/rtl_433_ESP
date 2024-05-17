@@ -348,10 +348,13 @@ int rtl_433_ESP::receivePulseTrain() {
 
 /**
  * @brief Main pulse receiver logic
- * 
+ *
  */
 void ICACHE_RAM_ATTR rtl_433_ESP::interruptHandler() {
   if (!_enabledReceiver || !receiveMode) {
+    if(!receiveMode && digitalRead(receiverGpio)){
+      _lastChange = micros();
+    }
     _noiseCount++;
     return;
   }
@@ -566,7 +569,7 @@ void rtl_433_ESP::rtl_433_ReceiverTask(void* pvParameters) {
           digitalWrite(ONBOARD_LED, HIGH);
 #endif
           signalRssi = currentRssi;
-          _lastChange = micros();
+          // _lastChange = micros();
 
           if (_noiseCount > 100) {
 #ifdef AUTOOOKFIX
